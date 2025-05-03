@@ -4,16 +4,19 @@ import api from "../services/api";
 import { User } from "../types/user";
 import { jwtDecode } from "jwt-decode";
 import JwtPayload from "../types/JwtPayload";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Ponto() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { signOut } = useAuth();
 
   const fetchUser = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
       setLoading(false);
+      navigate("/", { replace: true });
       return;
     }
 
@@ -45,15 +48,14 @@ export default function Ponto() {
       alert("Erro ao registrar ponto." + error);
     }
   };
-
   const logout = () => {
-    localStorage.removeItem("token");
-    navigate("/");
+    signOut();
+    navigate("/", { replace: true });
   };
 
   useEffect(() => {
     fetchUser();
-  }, []);
+  }, [navigate]);
 
   if (loading) {
     return <div className="p-4">Carregando...</div>;

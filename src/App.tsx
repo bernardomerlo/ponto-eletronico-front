@@ -4,46 +4,15 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { useEffect, useState } from "react";
 import Login from "./pages/Login";
 import Ponto from "./pages/Ponto";
 import Historico from "./pages/Historico";
 import Dashboard from "./pages/Dashboard";
-import { User } from "./types/user";
-import { jwtDecode } from "jwt-decode";
-import JwtPayload from "./types/JwtPayload";
+import { useAuth } from "./contexts/AuthContext";
+import Registro from "./pages/Registro";
 
 function App() {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const decoded = jwtDecode<JwtPayload>(token);
-      const userData: User = {
-        id: decoded.sub,
-        name: decoded.name,
-        email: decoded.email,
-        role: decoded.role,
-      };
-      setUser(userData);
-    } catch (err) {
-      console.error("Token inválido", err);
-      localStorage.removeItem("token");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  if (loading) {
-    return <div className="p-4">Carregando...</div>;
-  }
+  const { user } = useAuth();
 
   return (
     <Router>
@@ -67,6 +36,7 @@ function App() {
             )
           }
         />
+        <Route path="/register" element={<Registro />} />
       </Routes>
     </Router>
   );
