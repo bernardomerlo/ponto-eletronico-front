@@ -5,6 +5,7 @@ import { User } from "../types/user";
 import { jwtDecode } from "jwt-decode";
 import JwtPayload from "../types/JwtPayload";
 import { useAuth } from "../contexts/AuthContext";
+import axios from "axios";
 
 export default function Ponto() {
   const [user, setUser] = useState<User | null>(null);
@@ -36,16 +37,25 @@ export default function Ponto() {
     }
   };
 
-  const baterPonto = async (type: "check-in" | "check-out") => {
+  const baterPonto = async (type: "check_in" | "check_out") => {
     try {
-      await api.post("/punch", { type });
+      await api.post("/punch-clock", { type });
       alert(
         `Ponto de ${
-          type === "check-in" ? "entrada" : "saída"
+          type === "check_in" ? "entrada" : "saída"
         } registrado com sucesso.`
       );
     } catch (error) {
-      alert("Erro ao registrar ponto." + error);
+      if (axios.isAxiosError(error) && error.response?.status === 409) {
+        alert(
+          `Você já registrou o ponto ${
+            type === "check_in" ? "entrada" : "saída"
+          } hoje.`
+        );
+        return;
+      }
+
+      alert("Erro ao registrar ponto.");
     }
   };
   const logout = () => {
@@ -67,16 +77,16 @@ export default function Ponto() {
 
       <div className="flex gap-4 mb-6">
         <button
-          onClick={() => baterPonto("check-in")}
+          onClick={() => baterPonto("check_in")}
           className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
         >
-          Check-in
+          Ponto de Entrada
         </button>
         <button
-          onClick={() => baterPonto("check-out")}
+          onClick={() => baterPonto("check_out")}
           className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
         >
-          Check-out
+          Ponto de Saída
         </button>
       </div>
 
