@@ -56,7 +56,7 @@ export default function Dashboard() {
                   <td className="py-2 px-4">{registro.user.name}</td>
                   <td className="py-2 px-4">{registro.user.email}</td>
                   <td className="py-2 px-4 capitalize">
-                    {registro.type === "check-in" ? "Entrada" : "Saída"}
+                    {registro.type === "check_in" ? "Entrada" : "Saída"}
                   </td>
                   <td className="py-2 px-4">
                     {new Date(registro.timestamp).toLocaleString("pt-BR")}
