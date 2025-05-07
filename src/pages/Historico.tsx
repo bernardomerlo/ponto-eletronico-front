@@ -13,7 +13,7 @@ export default function Historico() {
   useEffect(() => {
     const fetchRegistros = async () => {
       try {
-        const { data } = await api.get<Registro[]>("/punch");
+        const { data } = await api.get<Registro[]>("/punch-clock/history");
         setRegistros(data);
       } catch (err) {
         console.error("Erro ao buscar registros", err);
