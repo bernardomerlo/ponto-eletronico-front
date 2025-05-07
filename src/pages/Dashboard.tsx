@@ -51,7 +51,7 @@ export default function Dashboard() {
               </tr>
             </thead>
             <tbody>
-              {registros.map((registro) => (
+              {/* {registros.map((registro) => (
                 <tr key={registro.id} className="border-t">
                   <td className="py-2 px-4">{registro.user.name}</td>
                   <td className="py-2 px-4">{registro.user.email}</td>
@@ -62,7 +62,7 @@ export default function Dashboard() {
                     {new Date(registro.timestamp).toLocaleString("pt-BR")}
                   </td>
                 </tr>
-              ))}
+              ))} */}
             </tbody>
           </table>
         </div>

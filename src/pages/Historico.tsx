@@ -28,6 +28,7 @@ export default function Historico() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cyan-600 via-sky-500 to-indigo-500 p-4">
       <div className="w-full max-w-xl bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8">
+        {/* Cabeçalho */}
         <div className="flex items-center mb-6">
           <button
             type="button"
@@ -37,12 +38,16 @@ export default function Historico() {
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
+
           <h1 className="flex-1 text-center text-3xl font-extrabold text-gray-800">
             Histórico de Pontos
           </h1>
+
+          {/* placeholder para manter o título centralizado */}
           <span className="w-7" />
         </div>
 
+        {/* Conteúdo */}
         {loading ? (
           <div className="flex items-center justify-center py-12 text-gray-600">
             <Loader2 className="animate-spin h-6 w-6 mr-2" /> Carregando...
@@ -56,26 +61,35 @@ export default function Historico() {
             {registros.map((r) => (
               <li
                 key={r.id}
-                className="flex items-center justify-between bg-white rounded-lg shadow p-4"
+                className="flex flex-col sm:flex-row sm:items-center justify-between bg-white rounded-lg shadow p-4"
               >
-                <div className="flex items-center gap-2 font-semibold text-gray-700">
-                  {r.type === "check_in" ? (
-                    <LogIn className="h-5 w-ø5 text-emerald-600" />
-                  ) : (
-                    <LogOut className="h-5 w-5 text-rose-600" />
+                {/* Data */}
+                <span className="font-semibold text-gray-700">
+                  {new Date(r.date).toLocaleDateString("pt-BR")}
+                </span>
+
+                {/* Horários + total */}
+                <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mt-2 sm:mt-0">
+                  <span className="flex items-center gap-1">
+                    <LogIn className="h-5 w-5 text-emerald-600" />
+                    {r.checkInHour}
+                  </span>
+
+                  {r.checkOutHour && (
+                    <span className="flex items-center gap-1">
+                      <LogOut className="h-5 w-5 text-rose-600" />
+                      {r.checkOutHour}
+                    </span>
                   )}
-                  <span className="capitalize">
-                    {r.type === "check_in" ? "Entrada" : "Saída"}
+
+                  <span className="ml-2 font-mono">
+                    {r.hoursWorked.toFixed(2)} h
                   </span>
                 </div>
-                <span className="text-sm text-gray-500">
-                  {new Date(r.timestamp).toLocaleString("pt-BR")}
-                </span>
               </li>
             ))}
           </ul>
         )}
       </div>
     </div>
-  );
-}
+)};
